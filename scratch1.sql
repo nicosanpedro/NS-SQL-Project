@@ -1,6 +1,6 @@
 --ALL TABLES
 
-SELECT *
+'''SELECT *
 FROM sales_report;
 
 SELECT *
@@ -15,29 +15,29 @@ SELECT *
 FROM products;
 
 SELECT * 
-FROM sku_sales
+FROM sku_sales'''
 
 --------------------------------------------------------------------------------
 ---CORRECTING PRICE
 --------------------------------------------------------------------------------
 --1. ANALYTICS
-SELECT * 
+'''SELECT * 
 FROM analytics
 WHERE unitsold IS NOT NULL;
 
 UPDATE analytics
-SET unitprice = unitprice / 1000000;
+SET unitprice = unitprice / 1000000;'''
 
 
 --2. ALL SESSIONS
-UPDATE all_sessions
+'''UPDATE all_sessions
 SET productprice = productprice / 1000000;
 UPDATE all_sessions
 SET productrevenue = productrevenue / 1000000;
 UPDATE all_sessions
 SET totaltransactionrevenue = totaltransactionrevenue / 1000000;
 UPDATE all_sessions
-SET transrevenue = transrevenue / 1000000;
+SET transrevenue = transrevenue / 1000000;'''
 
 -- UPDATE all_sessions
 -- SET itemquantity = itemquantity / 1000000;
@@ -45,23 +45,23 @@ SET transrevenue = transrevenue / 1000000;
 -- SET itemrevenue = itemrevenue / 1000000;
 
 --3. Products
-SELECT * 
-FROM products
+'''SELECT * 
+FROM products'''
 
 --4. Sales Report
 
-SELECT * 
-FROM sales_report
+'''SELECT * 
+FROM sales_report'''
 
 --5. sku_sales
-SELECT * 
-FROM sku_sales
+'''SELECT * 
+FROM sku_sales'''
 
 --------------------------------------------------------------------------------
 ---CORRECTING PRODUCT CATEGORY
 --------------------------------------------------------------------------------
 
-SELECT * 
+'''SELECT * 
 FROM all_sessions
 WHERE productcategory LIKE '%Lifestyle/%' 
 	OR productcategory LIKE 'Bags' 
@@ -143,7 +143,7 @@ WHERE LENGTH(productcategory) > 0;
 
 UPDATE all_sessions
 SET productcategory = REPLACE(productcategory,'Home/', '')
-WHERE productcategory ILIKE '%Home/%';
+WHERE productcategory ILIKE '%Home/%';'''
 
 
 
