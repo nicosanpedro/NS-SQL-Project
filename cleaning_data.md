@@ -14,8 +14,7 @@ Below, provide the SQL queries you used to clean your data.
 --PRODUCTS TABLE
 
     --CREATE NEW PRODUCTS TABLE
-    --------------------------------------------------------------------------------
-    CREATE TABLE products(
+    '''CREATE TABLE products(
     	sku VARCHAR PRIMARY KEY,
     	productName VARCHAR,
     	orderedQuantity VARCHAR,
@@ -23,7 +22,7 @@ Below, provide the SQL queries you used to clean your data.
     	restockingLeadTime VARCHAR,
     	sentimentScore VARCHAR,
     	sentimentMagnitude VARCHAR
-    );
+    );'''
     
     -- INSERTING RAW DATA TO TABLE
     --------------------------------------------------------------------------------
