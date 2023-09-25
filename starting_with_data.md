@@ -6,13 +6,13 @@ SQL Queries:
 
 --DROP TABLE products;
 -- RAW DATA
-SELECT * 
-FROM raw_products;
+'''SELECT * 
+FROM raw_products;'''
 
 
 --CREATE NEW PRODUCTS TABLE
 ---------------------------------------------------------------------------------------------------------
-CREATE TABLE products(
+'''CREATE TABLE products(
 	sku VARCHAR PRIMARY KEY,
 	productName VARCHAR,
 	orderedQuantity VARCHAR,
@@ -20,27 +20,27 @@ CREATE TABLE products(
 	restockingLeadTime VARCHAR,
 	sentimentScore VARCHAR,
 	sentimentMagnitude VARCHAR
-);
+);'''
 
 
 -- INSERTING RAW DATA TO TABLE
 ---------------------------------------------------------------------------------------------------------
-INSERT INTO products
+'''INSERT INTO products
 SELECT * 
 FROM raw_products
-OFFSET 1; --REMOVE FIRST ROW
+OFFSET 1; --REMOVE FIRST ROW'''
 
 
 --ALTERING TABLE COLUMN DATA TYPE
 ---------------------------------------------------------------------------------------------------------
-ALTER TABLE products
+'''ALTER TABLE products
 ALTER COLUMN sku TYPE VARCHAR,
 ALTER COLUMN productName TYPE VARCHAR,
 ALTER COLUMN orderedQuantity TYPE NUMERIC USING orderedquantity::NUMERIC,
 ALTER COLUMN stockLevel TYPE NUMERIC USING stocklevel::NUMERIC,
 ALTER COLUMN restockingLeadTime TYPE NUMERIC USING restockingLeadTime::numeric,
 ALTER COLUMN sentimentScore TYPE NUMERIC USING sentimentScore::NUMERIC,
-ALTER COLUMN sentimentMagnitude TYPE NUMERIC USING sentimentMagnitude::NUMERIC;
+ALTER COLUMN sentimentMagnitude TYPE NUMERIC USING sentimentMagnitude::NUMERIC;'''
 ---------------------------**************************-------------------------------------------------------------------------------------
 
 
@@ -51,13 +51,13 @@ SQL Queries:
 ---------------------------------------------------------------------------------------------------------
 --DROP TABLE all_sessions;
 --RAW DATA
-SELECT *
-FROM raw_all_sessions;
+'''SELECT *
+FROM raw_all_sessions;'''
 
 
 --ALL SESSIONS TABLE
 ---------------------------------------------------------------------------------------------------------
-CREATE TABLE all_sessions(
+'''CREATE TABLE all_sessions(
 	visitorID VARCHAR,
 	channelGrouping VARCHAR,
 	sessiontime VARCHAR,
@@ -90,26 +90,26 @@ CREATE TABLE all_sessions(
 	ecommerceactiontype VARCHAR,
 	ecommerceactionstep VARCHAR,
 	ecommerceactionoption VARCHAR
-);
+);'''
 
 --CHECKDUPLICATE KEY
 ---------------------------------------------------------------------------------------------------------
-SELECT "visitorID", COUNT(*)
+'''SELECT "visitorID", COUNT(*)
 FROM public.raw_all_sessions
 GROUP BY 1 
-ORDER BY 2 DESC;
+ORDER BY 2 DESC;'''
 
 -- INSERTING RAW DATA TO TABLE
 ---------------------------------------------------------------------------------------------------------
-INSERT INTO all_sessions
+'''INSERT INTO all_sessions
 SELECT * 
 FROM raw_all_sessions
-OFFSET 1; --REMOVE FIRST ROW
+OFFSET 1; --REMOVE FIRST ROW'''
 
 
 --ALTERING TABLE COLUMN DATA TYPE
 ---------------------------------------------------------------------------------------------------------
-ALTER TABLE all_sessions
+'''ALTER TABLE all_sessions
 ALTER COLUMN visitorID TYPE VARCHAR,
 ALTER COLUMN channelGrouping TYPE VARCHAR,
 ALTER COLUMN sessiontime TYPE NUMERIC USING sessiontime :: NUMERIC,
@@ -141,20 +141,20 @@ ALTER COLUMN searchkeyword TYPE VARCHAR,
 ALTER COLUMN pagepathlevel TYPE VARCHAR,
 ALTER COLUMN ecommerceactiontype TYPE NUMERIC USING ecommerceactiontype :: NUMERIC,
 ALTER COLUMN ecommerceactionstep TYPE NUMERIC USING ecommerceactionstep :: NUMERIC,
-ALTER COLUMN ecommerceactionoption TYPE VARCHAR;
+ALTER COLUMN ecommerceactionoption TYPE VARCHAR;'''
 
 
 
 --CORRECTING PRICES
 ---------------------------------------------------------------------------------------------------------
-UPDATE all_sessions
+'''UPDATE all_sessions
 SET productprice = productprice / 1000000;
 UPDATE all_sessions
 SET productrevenue = productrevenue / 1000000;
 UPDATE all_sessions
 SET totaltransactionrevenue = totaltransactionrevenue / 1000000;
 UPDATE all_sessions
-SET transrevenue = transrevenue / 1000000;
+SET transrevenue = transrevenue / 1000000;'''
 
 
 
@@ -162,18 +162,18 @@ SET transrevenue = transrevenue / 1000000;
 ---------------------------------------------------------------------------------------------------------
 
 --1. ALL SESSIONS PK
-ALTER TABLE all_sessions
+'''ALTER TABLE all_sessions
 ADD COLUMN sessionid VARCHAR,
 ADD COLUMN sessionnum SERIAL,
-ADD COLUMN sessiontext VARCHAR DEFAULT 'S';
+ADD COLUMN sessiontext VARCHAR DEFAULT 'S';'''
 
-UPDATE all_sessions
-SET sessionid = sessiontext || sessionnum :: VARCHAR;
+'''UPDATE all_sessions
+SET sessionid = sessiontext || sessionnum :: VARCHAR;'''
 
-ALTER TABLE all_sessions
+'''ALTER TABLE all_sessions
 DROP COLUMN sessionnum,
 DROP COLUMN sessiontext,
-ADD PRIMARY KEY(sessionid);
+ADD PRIMARY KEY(sessionid);'''
 
 
 
@@ -190,7 +190,7 @@ ADD PRIMARY KEY(sessionid);
 -- 	OR productcategory LIKE 'Headgear'
 	
 
-UPDATE all_sessions
+'''UPDATE all_sessions
 SET productcategory = 'Apparel'
 WHERE productcategory ILIKE '%apparel%' OR
 	productcategory ILIKE '%T-Shirts%';
@@ -270,7 +270,7 @@ SET productcategory = CASE
 
 UPDATE all_sessions
 SET city = ''
-WHERE city ILIKE '%not available in demo dataset%';
+WHERE city ILIKE '%not available in demo dataset%';'''
 ---------------------------**************************-------------------------------------------------------------------------------------
 
 
@@ -284,13 +284,13 @@ SQL Queries:
 --DROP TABLE raw_analytics
 
 --RAW ANALYTICS TABLE
-SELECT * 
-FROM raw_analytics
+'''SELECT * 
+FROM raw_analytics'''
 
 
 --ANALYTICS TABLE
 ---------------------------------------------------------------------------------------------------------
-CREATE TABLE analytics(
+'''CREATE TABLE analytics(
 	visitnumber VARCHAR,
 	visitid VARCHAR,
 	visitstarttime VARCHAR,
@@ -305,20 +305,20 @@ CREATE TABLE analytics(
 	bounces VARCHAR,
 	revenue VARCHAR,
 	unitprice VARCHAR
-);
+);'''
 
 
 -- INSERTING RAW DATA TO TABLE
 ---------------------------------------------------------------------------------------------------------
-INSERT INTO analytics
+'''INSERT INTO analytics
 SELECT * 
 FROM raw_analytics
-OFFSET 1; --REMOVE FIRST ROW
+OFFSET 1; --REMOVE FIRST ROW'''
 
 
 --ALTERING DATATYPE
 ---------------------------------------------------------------------------------------------------------
-ALTER TABLE analytics
+'''ALTER TABLE analytics
 ALTER COLUMN visitnumber TYPE VARCHAR,
 ALTER COLUMN visitid TYPE VARCHAR,
 ALTER COLUMN visitstarttime TYPE NUMERIC USING visitstarttime :: NUMERIC,
@@ -332,19 +332,19 @@ ALTER COLUMN pageviews TYPE NUMERIC USING pageviews :: NUMERIC,
 ALTER COLUMN timeonsite TYPE NUMERIC USING timeonsite :: NUMERIC,
 ALTER COLUMN bounces TYPE NUMERIC USING bounces :: NUMERIC,
 ALTER COLUMN revenue TYPE NUMERIC USING revenue :: NUMERIC,
-ALTER COLUMN unitprice TYPE NUMERIC USING unitprice :: NUMERIC;
+ALTER COLUMN unitprice TYPE NUMERIC USING unitprice :: NUMERIC;'''
 
 
 
 ---CORRECTING PRICE
 ---------------------------------------------------------------------------------------------------------
 --1. ANALYTICS
-SELECT * 
+'''SELECT * 
 FROM analytics
 WHERE unitsold IS NOT NULL;
 
 UPDATE analytics
-SET unitprice = unitprice / 1000000;
+SET unitprice = unitprice / 1000000;'''
 
 
 
@@ -352,7 +352,7 @@ SET unitprice = unitprice / 1000000;
 ---------------------------------------------------------------------------------------------------------
 
 --ANALYTICS PK
-ALTER TABLE analytics
+'''ALTER TABLE analytics
 ADD COLUMN analyticsid VARCHAR,
 ADD COLUMN analyticsnum SERIAL,
 ADD COLUMN analyticstext VARCHAR DEFAULT 'A';
@@ -363,7 +363,7 @@ SET analyticsid = analyticstext || analyticsnum :: VARCHAR;
 ALTER TABLE analytics
 DROP COLUMN analyticsnum,
 DROP COLUMN analyticstext,
-ADD PRIMARY KEY(analyticsid);
+ADD PRIMARY KEY(analyticsid);'''
 ---------------------------**************************-------------------------------------------------------------------------------------
 
 
@@ -377,13 +377,13 @@ SQL Queries:
 --DROP TABLE sales_report;
 
 --RAW SALES REPORT
-SELECT *
-FROM raw_sales_report;
+'''SELECT *
+FROM raw_sales_report;'''
 
 
 --SALES REPOR TABLE
 ---------------------------------------------------------------------------------------------------------
-CREATE TABLE sales_report(
+'''CREATE TABLE sales_report(
 	productsku VARCHAR,
 	totalordered VARCHAR,
 	prodname VARCHAR,
@@ -392,20 +392,20 @@ CREATE TABLE sales_report(
 	sentimentscore VARCHAR,
 	sentimentmagnitude VARCHAR,
 	ratio VARCHAR
-);
+);'''
 
 
 --INSERTING RAW TABLE
 ---------------------------------------------------------------------------------------------------------
-INSERT INTO sales_report
+'''INSERT INTO sales_report
 SELECT *
 FROM raw_sales_report
-OFFSET 1; --OFFSET 1 ROW
+OFFSET 1; --OFFSET 1 ROW'''
 
 
 --ALTERING TABLE DATATYPE
 ---------------------------------------------------------------------------------------------------------
-ALTER TABLE sales_report
+'''ALTER TABLE sales_report
 ALTER COLUMN productsku TYPE VARCHAR,
 ALTER COLUMN totalordered TYPE NUMERIC USING totalordered :: NUMERIC,
 ALTER COLUMN prodname TYPE VARCHAR,
@@ -413,13 +413,13 @@ ALTER COLUMN stocklevel TYPE NUMERIC USING stocklevel :: NUMERIC,
 ALTER COLUMN restockingleadtime TYPE NUMERIC USING restockingleadtime :: NUMERIC,
 ALTER COLUMN sentimentscore TYPE NUMERIC USING sentimentscore :: NUMERIC,
 ALTER COLUMN sentimentmagnitude TYPE NUMERIC USING sentimentmagnitude :: NUMERIC,
-ALTER COLUMN ratio TYPE NUMERIC USING ratio :: NUMERIC;
+ALTER COLUMN ratio TYPE NUMERIC USING ratio :: NUMERIC;'''
 
 
 --CREATING PRIMARY KEYS
 ---------------------------------------------------------------------------------------------------------
 -- SALES REPORT PK
-ALTER TABLE sales_report
+'''ALTER TABLE sales_report
 ADD COLUMN reportid VARCHAR,
 ADD COLUMN reportnum SERIAL,
 ADD COLUMN reporttext VARCHAR DEFAULT 'R';
@@ -430,7 +430,7 @@ SET reportid = reporttext || reportnum :: VARCHAR;
 ALTER TABLE sales_report
 DROP COLUMN reportnum,
 DROP COLUMN reporttext,
-ADD PRIMARY KEY(reportid);
+ADD PRIMARY KEY(reportid);'''
 ---------------------------**************************-------------------------------------------------------------------------------------
 
 
@@ -445,38 +445,38 @@ SQL Queries:
 --DROP TABLE skusales;
 
 --RAW DATA
-SELECT *
-FROM raw_sku_sales;
+'''SELECT *
+FROM raw_sku_sales;'''
 
 
 --CREATING TABLE
 ---------------------------------------------------------------------------------------------------------
-CREATE TABLE sku_sales(
+'''CREATE TABLE sku_sales(
 	productsku VARCHAR,
 	totalordered VARCHAR
-);
+);'''
 
 
 --INSERTING DATA
 ---------------------------------------------------------------------------------------------------------
-INSERT INTO sku_sales
+'''INSERT INTO sku_sales
 SELECT *
 FROM raw_sku_sales
-OFFSET 1; --OFFSET 1 ROW
+OFFSET 1; --OFFSET 1 ROW'''
 
 
 --ALTERING DATA TYPE
 ---------------------------------------------------------------------------------------------------------
-ALTER TABLE sku_sales
+'''ALTER TABLE sku_sales
 ALTER COLUMN productsku TYPE VARCHAR,
-ALTER COLUMN totalordered TYPE NUMERIC USING totalordered :: NUMERIC;
+ALTER COLUMN totalordered TYPE NUMERIC USING totalordered :: NUMERIC;'''
 
 
 
 --CREATING PRIMARY KEYS
 ---------------------------------------------------------------------------------------------------------
 -- SKU SALES PK
-ALTER TABLE sku_sales
+'''ALTER TABLE sku_sales
 ADD COLUMN salesid VARCHAR,
 ADD COLUMN salesnum SERIAL,
 ADD COLUMN salestext VARCHAR DEFAULT 'SA';
@@ -487,5 +487,5 @@ SET salesid = salestext || salesnum :: VARCHAR;
 ALTER TABLE sku_sales
 DROP COLUMN salesnum,
 DROP COLUMN salestext,
-ADD PRIMARY KEY(salesid);
+ADD PRIMARY KEY(salesid);'''
 ---------------------------**************************-----------------------------------------------------
